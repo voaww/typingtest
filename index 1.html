@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crisis Line Typing Assessment</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;700&display=swap');
+body{min-height:100vh;background:#0f172a;color:#e2e8f0;font-family:'IBM Plex Sans','SF Pro Text',-apple-system,sans-serif;display:flex;justify-content:center;align-items:flex-start;padding:40px 20px}
+.container{max-width:540px;width:100%;text-align:center;padding-top:40px}
+.test-container{max-width:760px;width:100%;cursor:text}
+.thankyou-container{max-width:500px;width:100%;text-align:center;padding-top:80px}
+.icon{font-size:48px;margin-bottom:16px;filter:grayscale(1) brightness(1.5);user-select:none}
+h1{font-size:28px;font-weight:700;letter-spacing:-0.02em;margin-bottom:8px;color:#f1f5f9}
+.subtitle{font-size:15px;color:#94a3b8;line-height:1.6;max-width:440px;margin:0 auto 32px}
+.card{background:#1e293b;border-radius:12px;padding:28px 24px;text-align:left;border:1px solid #334155}
+.label{display:block;font-size:13px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px}
+.label+.label{margin-top:20px}
+.input{width:100%;padding:12px 14px;font-size:16px;border-radius:8px;border:1px solid #334155;background:#0f172a;color:#e2e8f0;outline:none;box-sizing:border-box;font-family:inherit}
+.info-box{margin-top:20px;padding:14px 16px;background:#0f172a;border-radius:8px;border:1px solid #334155}
+.info-row{font-size:14px;color:#e2e8f0;padding:4px 0;display:flex;gap:8px}
+.info-lbl{color:#64748b;font-weight:600}
+.btn-primary{width:100%;margin-top:20px;padding:14px 0;border-radius:10px;border:none;background:linear-gradient(135deg,#1d4ed8,#2563eb);color:#fff;font-size:16px;font-weight:600;cursor:pointer;font-family:inherit}
+.btn-primary:disabled{opacity:0.4;cursor:not-allowed}
+.btn-secondary{display:block;width:100%;margin-top:12px;padding:12px 0;border-radius:10px;border:1px solid #334155;background:transparent;color:#94a3b8;font-size:15px;font-weight:500;cursor:pointer;font-family:inherit;max-width:280px;margin-left:auto;margin-right:auto}
+.warning{display:flex;gap:12px;align-items:flex-start;margin-top:16px;padding:14px 16px;border-radius:10px;background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.25);font-size:13px;color:#94a3b8;line-height:1.6;text-align:left}
+.warning-icon{font-size:20px;flex-shrink:0;margin-top:-1px}
+.warning strong{color:#fbbf24}
+.fine{font-size:12px;color:#475569;margin-top:20px}
+
+.test-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.passage-label{font-size:14px;color:#64748b;font-weight:600;text-transform:uppercase;letter-spacing:0.04em}
+.name-tag{margin-left:12px;font-size:13px;color:#475569;background:#1e293b;padding:4px 10px;border-radius:6px}
+.timer{font-size:32px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-0.02em;font-family:'IBM Plex Mono',monospace;color:#94a3b8}
+.timer.urgent{color:#ef4444}
+.progress-bar{width:100%;height:3px;background:#1e293b;border-radius:2px;margin-bottom:24px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,#1d4ed8,#60a5fa);border-radius:2px;transition:width 0.15s;width:0%}
+.text-display{font-size:22px;line-height:1.8;letter-spacing:0.01em;padding:24px 28px;background:#1e293b;border-radius:12px;border:1px solid #334155;min-height:200px;max-height:320px;overflow-y:auto;overflow-x:hidden;font-family:'IBM Plex Mono','SF Mono',monospace;word-wrap:break-word;overflow-wrap:break-word;white-space:pre-wrap}
+.char-correct{color:#e2e8f0;font-weight:500}
+.char-incorrect{color:#fca5a5;background:rgba(239,68,68,0.15);font-weight:500}
+.char-pending{color:#64748b}
+.char-cursor{border-left:2px solid #60a5fa;padding-left:1px}
+.hidden-input{position:absolute;opacity:0;left:-9999px;top:-9999px}
+.hint{text-align:center;margin-top:24px;font-size:15px;color:#475569}
+.live-info{text-align:center;margin-top:16px}
+.recording{display:flex;align-items:center;justify-content:center;gap:8px;font-size:12px;color:#f87171;margin-bottom:6px;font-weight:500}
+.rec-dot{width:8px;height:8px;border-radius:50%;background:#ef4444;display:inline-block}
+.pct-text{font-size:14px;color:#64748b}
+
+.check-circle{width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#16a34a,#22c55e);display:flex;align-items:center;justify-content:center;font-size:36px;color:#fff;margin:0 auto 24px;font-weight:700}
+.ty-title{font-size:26px;font-weight:700;color:#f1f5f9;margin-bottom:16px}
+.ty-text{font-size:16px;color:#94a3b8;line-height:1.7;margin-bottom:8px}
+.ty-divider{width:60px;height:1px;background:#334155;margin:28px auto}
+.ty-small{font-size:14px;color:#475569;margin-bottom:8px}
+.saving{font-size:13px;color:#64748b;margin-top:8px}
+.hidden{display:none}
+</style>
+</head>
+<body>
+
+<!-- START SCREEN -->
+<div id="startScreen" class="container">
+  <div class="icon">⌨</div>
+  <h1>Crisis Line Typing Assessment</h1>
+  <p class="subtitle">This is a 2.5-minute timed assessment that measures your typing speed and accuracy using passages relevant to crisis intervention work. Your results will be submitted automatically upon completion.</p>
+  <div class="card">
+    <label class="label" for="nameInput">Full Name *</label>
+    <input class="input" type="text" id="nameInput" placeholder="Enter your full name">
+    <label class="label" for="emailInput">Email Address</label>
+    <input class="input" type="email" id="emailInput" placeholder="Enter your email (optional)">
+    <div class="info-box">
+      <div class="info-row"><span class="info-lbl">Duration:</span> 2.5 minutes</div>
+      <div class="info-row"><span class="info-lbl">Attempts:</span> Maximum of 3</div>
+    </div>
+    <button class="btn-primary" id="beginBtn" disabled>Begin Assessment</button>
+  </div>
+  <div class="warning">
+    <span class="warning-icon">⚠</span>
+    <div><strong>Important:</strong> You have a maximum of <strong>3 attempts</strong> to complete this assessment. Once you begin typing, your attempt is recorded and submitted. If you navigate away or restart without completing the test, it will count as a failed attempt. Please ensure you are ready before you start.</div>
+  </div>
+  <p class="fine">By proceeding, you acknowledge that your responses and connection details will be recorded for evaluation purposes.</p>
+</div>
+
+<!-- TEST SCREEN -->
+<div id="testScreen" class="test-container hidden">
+  <div class="test-header">
+    <div>
+      <span class="passage-label" id="passageTitle"></span>
+      <span class="name-tag" id="testName"></span>
+    </div>
+    <div class="timer" id="timerDisplay">2:30</div>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+  <div class="text-display" id="textDisplay"></div>
+  <textarea class="hidden-input" id="typingInput" spellcheck="false" autocorrect="off" autocapitalize="off"></textarea>
+  <div class="hint" id="hintText">Start typing to begin the assessment...</div>
+  <div class="live-info hidden" id="liveInfo">
+    <div class="recording"><span class="rec-dot"></span> Attempt in progress — being recorded</div>
+    <div class="pct-text" id="pctText">0% complete</div>
+  </div>
+</div>
+
+<!-- THANK YOU SCREEN -->
+<div id="thankYouScreen" class="thankyou-container hidden">
+  <div class="check-circle">✓</div>
+  <h1 class="ty-title">Assessment Complete</h1>
+  <p class="ty-text">Thank you, <strong id="tyName"></strong>. Your typing assessment has been submitted successfully.</p>
+  <p class="ty-text">The hiring team will review your results and follow up with you regarding next steps in the application process.</p>
+  <p class="saving hidden" id="savingText">Submitting your results...</p>
+  <div class="ty-divider"></div>
+  <p class="ty-small">If you have questions about the application process, please contact the program coordinator.</p>
+  <button class="btn-secondary" id="retakeBtn">Take Another Test</button>
+</div>
+
+<script>
+// ============================================
+// CONFIG
+// ============================================
+const FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSc_mxCDXwxGpGOTy_b7Zuq_xzzC_4BxIxNIARa_SAMELlzGZw/formResponse";
+const FIELD_MAP = {
+  name: "entry.1118223278",
+  email: "entry.1304982905",
+  ip: "entry.467116230",
+  netWPM: "entry.1352118148",
+  grossWPM: "entry.1113629335",
+  accuracy: "entry.511259471",
+  errors: "entry.1576750944",
+  completion: "entry.118451493",
+  grade: "entry.999421090",
+  passage: "entry.717580041",
+  duration: "entry.1162154227",
+  elapsedSec: "entry.1129466769",
+  keystrokes: "entry.1177283231",
+  efficiency: "entry.961436587",
+  recommendation: "entry.1578203105",
+  abandoned: "entry.825008667",
+};
+
+const PASSAGES = [
+  { title: "Crisis De-escalation", text: "I hear that you are going through something incredibly difficult right now. Thank you for reaching out and sharing this with me. I want you to know that you are not alone in this moment, and I am here to listen and support you through whatever you are experiencing. Your feelings are valid, and it takes real courage to ask for help." },
+  { title: "Safety Planning", text: "Let us work together to create a plan that can help you feel safer. Can you tell me about some things that have helped you cope in the past? Sometimes it helps to think about people you trust, places that feel safe, or activities that bring you some comfort. We can write these down together so you have them when you need them most." },
+  { title: "Active Listening Response", text: "It sounds like you have been carrying a lot of weight on your shoulders lately, and that must feel exhausting. I want to make sure I understand what you are telling me. You mentioned feeling overwhelmed at work and disconnected from the people around you. Is that right? I appreciate you being so open with me about these feelings." },
+  { title: "Resource Connection", text: "Based on what you have shared with me today, I think there are some resources that might be helpful for you. Would you be open to hearing about a few options? There are local counseling services that offer sliding scale fees, and I can also provide information about support groups in your area. You deserve ongoing support beyond this call." }
+];
+
+const DURATION = 150;
+
+// ============================================
+// STATE
+// ============================================
+let applicantName = "";
+let applicantEmail = "";
+let passage = null;
+let typed = "";
+let timeLeft = DURATION;
+let started = false;
+let finished = false;
+let ipAddress = "Unknown";
+let keystrokes = 0;
+let errors = 0;
+let charStates = [];
+let timerInterval = null;
+let hasSubmitted = false;
+
+// ============================================
+// ELEMENTS
+// ============================================
+const $ = id => document.getElementById(id);
+const startScreen = $("startScreen");
+const testScreen = $("testScreen");
+const thankYouScreen = $("thankYouScreen");
+const nameInput = $("nameInput");
+const emailInput = $("emailInput");
+const beginBtn = $("beginBtn");
+const passageTitle = $("passageTitle");
+const testName = $("testName");
+const timerDisplay = $("timerDisplay");
+const progressFill = $("progressFill");
+const textDisplay = $("textDisplay");
+const typingInput = $("typingInput");
+const hintText = $("hintText");
+const liveInfo = $("liveInfo");
+const pctText = $("pctText");
+const tyName = $("tyName");
+const savingText = $("savingText");
+const retakeBtn = $("retakeBtn");
+
+// ============================================
+// IP DETECTION
+// ============================================
+fetch("https://api.ipify.org?format=json")
+  .then(r => r.json())
+  .then(d => { ipAddress = d.ip; })
+  .catch(() => {});
+
+// ============================================
+// SUBMISSION
+// ============================================
+function submitToGoogle(data) {
+  // Method 1: fetch with no-cors
+  try {
+    const params = new URLSearchParams();
+    Object.entries(FIELD_MAP).forEach(([key, entry]) => {
+      params.append(entry, String(data[key] ?? ""));
+    });
+    fetch(FORM_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: params.toString(),
+    }).catch(() => {});
+  } catch(e) {}
+
+  // Method 2: hidden iframe form
+  try {
+    const id = "gf_" + Date.now();
+    const iframe = document.createElement("iframe");
+    iframe.name = id;
+    iframe.style.cssText = "position:absolute;width:0;height:0;border:0;left:-9999px";
+    document.body.appendChild(iframe);
+
+    const form = document.createElement("form");
+    form.method = "POST";
+    form.action = FORM_URL;
+    form.target = id;
+    form.style.display = "none";
+
+    Object.entries(FIELD_MAP).forEach(([key, entry]) => {
+      const inp = document.createElement("input");
+      inp.type = "hidden";
+      inp.name = entry;
+      inp.value = String(data[key] ?? "");
+      form.appendChild(inp);
+    });
+
+    document.body.appendChild(form);
+    form.submit();
+
+    setTimeout(() => {
+      try { document.body.removeChild(form); } catch(e) {}
+      try { document.body.removeChild(iframe); } catch(e) {}
+    }, 5000);
+  } catch(e) {}
+}
+
+// ============================================
+// RESULTS CALCULATION
+// ============================================
+function calcResults() {
+  const target = passage.text;
+  const elapsedSec = started ? DURATION - timeLeft || DURATION : 0;
+  const elapsedMin = elapsedSec / 60;
+  const correctChars = charStates.filter(s => s === "correct").length;
+  const totalTyped = typed.length;
+  const grossWPM = elapsedMin > 0 ? Math.round(totalTyped / 5 / elapsedMin) : 0;
+  const netWPM = elapsedMin > 0 ? Math.max(0, Math.round((totalTyped / 5 - errors) / elapsedMin)) : 0;
+  const accuracy = totalTyped > 0 ? Math.round((correctChars / totalTyped) * 100) : 0;
+  const completion = Math.round((totalTyped / target.length) * 100);
+  return { grossWPM, netWPM, accuracy, completion, correctChars, totalTyped, elapsedSec, errors };
+}
+
+function getGrade(netWPM, accuracy) {
+  if (netWPM >= 50 && accuracy >= 95) return { label: "Excellent", rec: "Strong candidate for chat/text crisis services." };
+  if (netWPM >= 40 && accuracy >= 90) return { label: "Good", rec: "Meets minimum requirements for crisis text/chat." };
+  if (netWPM >= 30 && accuracy >= 85) return { label: "Adequate", rec: "May benefit from additional typing practice before starting." };
+  return { label: "Needs Improvement", rec: "Recommend typing practice before re-assessment." };
+}
+
+function doSubmit(abandoned) {
+  if (hasSubmitted) return;
+  hasSubmitted = true;
+  savingText.classList.remove("hidden");
+
+  const r = calcResults();
+  const g = abandoned
+    ? { label: "Abandoned", rec: "Applicant abandoned the test before completion." }
+    : getGrade(r.netWPM, r.accuracy);
+
+  submitToGoogle({
+    name: applicantName,
+    email: applicantEmail,
+    ip: ipAddress,
+    netWPM: r.netWPM,
+    grossWPM: r.grossWPM,
+    accuracy: r.accuracy,
+    errors: r.errors,
+    completion: r.completion,
+    grade: g.label,
+    passage: passage.title,
+    duration: DURATION,
+    elapsedSec: r.elapsedSec,
+    keystrokes: keystrokes,
+    efficiency: r.totalTyped > 0 ? Math.round((r.correctChars / keystrokes) * 100) : 0,
+    recommendation: g.rec,
+    abandoned: abandoned ? "Yes" : "No",
+  });
+
+  setTimeout(() => { savingText.classList.add("hidden"); }, 2000);
+}
+
+// ============================================
+// DISPLAY
+// ============================================
+function showScreen(screen) {
+  startScreen.classList.add("hidden");
+  testScreen.classList.add("hidden");
+  thankYouScreen.classList.add("hidden");
+  screen.classList.remove("hidden");
+}
+
+function renderText() {
+  const target = passage.text;
+  let html = "";
+  for (let i = 0; i < target.length; i++) {
+    let cls = "char-pending";
+    if (i < typed.length) {
+      cls = typed[i] === target[i] ? "char-correct" : "char-incorrect";
+    }
+    if (i === typed.length) cls += " char-cursor";
+    const ch = target[i] === " " ? " " : target[i].replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    html += '<span class="' + cls + '">' + ch + '</span>';
+  }
+  textDisplay.innerHTML = html;
+
+  // Scroll cursor into view
+  const cursorEl = textDisplay.querySelector(".char-cursor");
+  if (cursorEl) cursorEl.scrollIntoView({ block: "nearest", behavior: "smooth" });
+}
+
+function formatTime(s) {
+  return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0");
+}
+
+function updateTimer() {
+  timerDisplay.textContent = formatTime(timeLeft);
+  timerDisplay.className = "timer" + (timeLeft <= 10 && started ? " urgent" : "");
+}
+
+function updateProgress() {
+  const pct = Math.min((typed.length / passage.text.length) * 100, 100);
+  progressFill.style.width = pct + "%";
+  pctText.textContent = Math.round(pct) + "% complete";
+}
+
+// ============================================
+// TEST LOGIC
+// ============================================
+function startTest() {
+  passage = PASSAGES[Math.floor(Math.random() * PASSAGES.length)];
+  applicantName = nameInput.value.trim();
+  applicantEmail = emailInput.value.trim();
+
+  passageTitle.textContent = passage.title;
+  testName.textContent = applicantName;
+  timerDisplay.textContent = formatTime(DURATION);
+  progressFill.style.width = "0%";
+  hintText.classList.remove("hidden");
+  liveInfo.classList.add("hidden");
+
+  typed = "";
+  timeLeft = DURATION;
+  started = false;
+  finished = false;
+  keystrokes = 0;
+  errors = 0;
+  charStates = [];
+  hasSubmitted = false;
+  typingInput.value = "";
+
+  renderText();
+  showScreen(testScreen);
+  typingInput.focus();
+}
+
+function endTest() {
+  finished = true;
+  clearInterval(timerInterval);
+  tyName.textContent = applicantName;
+  showScreen(thankYouScreen);
+  doSubmit(false);
+}
+
+function onTyping() {
+  if (finished) return;
+  const val = typingInput.value;
+
+  if (!started && val.length > 0) {
+    started = true;
+    timeLeft = DURATION;
+    hintText.classList.add("hidden");
+    liveInfo.classList.remove("hidden");
+
+    timerInterval = setInterval(() => {
+      timeLeft--;
+      updateTimer();
+      if (timeLeft <= 0) {
+        clearInterval(timerInterval);
+        endTest();
+      }
+    }, 1000);
+  }
+
+  typed = val;
+  keystrokes++;
+
+  const target = passage.text;
+  charStates = [];
+  errors = 0;
+  for (let i = 0; i < target.length; i++) {
+    if (i < val.length) {
+      if (val[i] === target[i]) charStates.push("correct");
+      else { charStates.push("incorrect"); errors++; }
+    } else charStates.push("pending");
+  }
+
+  renderText();
+  updateProgress();
+
+  if (val.length >= target.length) {
+    endTest();
+  }
+}
+
+function resetAll() {
+  if (started && !finished && !hasSubmitted) {
+    doSubmit(true);
+  }
+  nameInput.value = "";
+  emailInput.value = "";
+  beginBtn.disabled = true;
+  typingInput.value = "";
+  clearInterval(timerInterval);
+  showScreen(startScreen);
+  nameInput.focus();
+}
+
+// ============================================
+// EVENT LISTENERS
+// ============================================
+nameInput.addEventListener("input", () => {
+  beginBtn.disabled = !nameInput.value.trim();
+});
+
+beginBtn.addEventListener("click", () => {
+  if (nameInput.value.trim()) startTest();
+});
+
+typingInput.addEventListener("input", onTyping);
+
+testScreen.addEventListener("click", () => {
+  typingInput.focus();
+});
+
+retakeBtn.addEventListener("click", resetAll);
+
+// Warn before leaving during active test
+window.addEventListener("beforeunload", (e) => {
+  if (started && !finished) {
+    e.preventDefault();
+    e.returnValue = "";
+  }
+});
+
+// Submit abandoned attempt if they close the page
+window.addEventListener("unload", () => {
+  if (started && !finished && !hasSubmitted) {
+    doSubmit(true);
+  }
+});
+
+// Handle keyboard shortcut to focus input
+document.addEventListener("keydown", (e) => {
+  if (testScreen.classList.contains("hidden")) return;
+  if (document.activeElement !== typingInput) {
+    typingInput.focus();
+  }
+});
+
+// Initial focus
+nameInput.focus();
+</script>
+</body>
+</html>
