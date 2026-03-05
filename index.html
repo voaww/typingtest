@@ -198,21 +198,6 @@ fetch("https://api.ipify.org?format=json")
 // SUBMISSION
 // ============================================
 function submitToGoogle(data) {
-  // Method 1: fetch with no-cors
-  try {
-    const params = new URLSearchParams();
-    Object.entries(FIELD_MAP).forEach(([key, entry]) => {
-      params.append(entry, String(data[key] ?? ""));
-    });
-    fetch(FORM_URL, {
-      method: "POST",
-      mode: "no-cors",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: params.toString(),
-    }).catch(() => {});
-  } catch(e) {}
-
-  // Method 2: hidden iframe form
   try {
     const id = "gf_" + Date.now();
     const iframe = document.createElement("iframe");
