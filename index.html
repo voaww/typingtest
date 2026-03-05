@@ -448,9 +448,34 @@ window.addEventListener("beforeunload", (e) => {
 });
 
 // Submit abandoned attempt if they close the page
-window.addEventListener("unload", () => {
-  if (started && !finished && !hasSubmitted) {
-    doSubmit(true);
+window.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "hidden" && started && !finished && !hasSubmitted) {
+    hasSubmitted = true;
+    const r = calcResults();
+    const g = { label: "Abandoned", rec: "Applicant abandoned the test before completion." };
+    const params = new URLSearchParams();
+    const submitData = {
+      name: applicantName,
+      email: applicantEmail,
+      ip: ipAddress,
+      netWPM: r.netWPM,
+      grossWPM: r.grossWPM,
+      accuracy: r.accuracy,
+      errors: r.errors,
+      completion: r.completion,
+      grade: g.label,
+      passage: passage.title,
+      duration: DURATION,
+      elapsedSec: r.elapsedSec,
+      keystrokes: keystrokes,
+      efficiency: r.totalTyped > 0 ? Math.round((r.correctChars / keystrokes) * 100) : 0,
+      recommendation: g.rec,
+      abandoned: "Yes",
+    };
+    Object.entries(FIELD_MAP).forEach(([key, entry]) => {
+      params.append(entry, String(submitData[key] ?? ""));
+    });
+    navigator.sendBeacon(FORM_URL, params);
   }
 });
 
