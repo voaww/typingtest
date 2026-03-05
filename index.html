@@ -11,6 +11,7 @@ body{min-height:100vh;background:#0f172a;color:#e2e8f0;font-family:'IBM Plex San
 .container{max-width:540px;width:100%;text-align:center;padding-top:40px}
 .test-container{max-width:760px;width:100%;cursor:text}
 .thankyou-container{max-width:500px;width:100%;text-align:center;padding-top:80px}
+.transition-container{max-width:500px;width:100%;text-align:center;padding-top:80px}
 .icon{font-size:48px;margin-bottom:16px;filter:grayscale(1) brightness(1.5);user-select:none}
 h1{font-size:28px;font-weight:700;letter-spacing:-0.02em;margin-bottom:8px;color:#f1f5f9}
 .subtitle{font-size:15px;color:#94a3b8;line-height:1.6;max-width:440px;margin:0 auto 32px}
@@ -23,17 +24,23 @@ h1{font-size:28px;font-weight:700;letter-spacing:-0.02em;margin-bottom:8px;color
 .info-lbl{color:#64748b;font-weight:600}
 .btn-primary{width:100%;margin-top:20px;padding:14px 0;border-radius:10px;border:none;background:linear-gradient(135deg,#1d4ed8,#2563eb);color:#fff;font-size:16px;font-weight:600;cursor:pointer;font-family:inherit}
 .btn-primary:disabled{opacity:0.4;cursor:not-allowed}
-.btn-secondary{display:block;width:100%;margin-top:12px;padding:12px 0;border-radius:10px;border:1px solid #334155;background:transparent;color:#94a3b8;font-size:15px;font-weight:500;cursor:pointer;font-family:inherit;max-width:280px;margin-left:auto;margin-right:auto}
+.btn-secondary{display:block;width:100%;margin-top:12px;padding:12px 0;borderRadius:10px;border:1px solid #334155;background:transparent;color:#94a3b8;font-size:15px;font-weight:500;cursor:pointer;font-family:inherit;max-width:280px;margin-left:auto;margin-right:auto;border-radius:10px}
 .warning{display:flex;gap:12px;align-items:flex-start;margin-top:16px;padding:14px 16px;border-radius:10px;background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.25);font-size:13px;color:#94a3b8;line-height:1.6;text-align:left}
 .warning-icon{font-size:20px;flex-shrink:0;margin-top:-1px}
 .warning strong{color:#fbbf24}
 .fine{font-size:12px;color:#475569;margin-top:20px}
 
 .test-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.test-header-left{display:flex;flex-direction:column;gap:4px}
 .passage-label{font-size:14px;color:#64748b;font-weight:600;text-transform:uppercase;letter-spacing:0.04em}
-.name-tag{margin-left:12px;font-size:13px;color:#475569;background:#1e293b;padding:4px 10px;border-radius:6px}
+.passage-counter{font-size:12px;color:#475569;font-weight:500}
+.name-tag{font-size:13px;color:#475569;background:#1e293b;padding:4px 10px;border-radius:6px;display:inline-block;margin-top:4px}
 .timer{font-size:32px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-0.02em;font-family:'IBM Plex Mono',monospace;color:#94a3b8}
 .timer.urgent{color:#ef4444}
+.overall-progress{display:flex;gap:6px;margin-bottom:16px}
+.overall-step{flex:1;height:4px;border-radius:2px;background:#1e293b}
+.overall-step.done{background:#16a34a}
+.overall-step.active{background:linear-gradient(90deg,#1d4ed8,#60a5fa)}
 .progress-bar{width:100%;height:3px;background:#1e293b;border-radius:2px;margin-bottom:24px;overflow:hidden}
 .progress-fill{height:100%;background:linear-gradient(90deg,#1d4ed8,#60a5fa);border-radius:2px;transition:width 0.15s;width:0%}
 .text-display{font-size:22px;line-height:1.8;letter-spacing:0.01em;padding:24px 28px;background:#1e293b;border-radius:12px;border:1px solid #334155;min-height:200px;max-height:320px;overflow-y:auto;overflow-x:hidden;font-family:'IBM Plex Mono','SF Mono',monospace;word-wrap:break-word;overflow-wrap:break-word;white-space:pre-wrap}
@@ -49,6 +56,7 @@ h1{font-size:28px;font-weight:700;letter-spacing:-0.02em;margin-bottom:8px;color
 .pct-text{font-size:14px;color:#64748b}
 
 .check-circle{width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#16a34a,#22c55e);display:flex;align-items:center;justify-content:center;font-size:36px;color:#fff;margin:0 auto 24px;font-weight:700}
+.arrow-circle{width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#1d4ed8,#2563eb);display:flex;align-items:center;justify-content:center;font-size:36px;color:#fff;margin:0 auto 24px;font-weight:700}
 .ty-title{font-size:26px;font-weight:700;color:#f1f5f9;margin-bottom:16px}
 .ty-text{font-size:16px;color:#94a3b8;line-height:1.7;margin-bottom:8px}
 .ty-divider{width:60px;height:1px;background:#334155;margin:28px auto}
@@ -63,21 +71,22 @@ h1{font-size:28px;font-weight:700;letter-spacing:-0.02em;margin-bottom:8px;color
 <div id="startScreen" class="container">
   <div class="icon">⌨</div>
   <h1>Crisis Line Typing Assessment</h1>
-  <p class="subtitle">This is a 2.5-minute timed assessment that measures your typing speed and accuracy using passages relevant to crisis intervention work. Your results will be submitted automatically upon completion.</p>
+  <p class="subtitle">This assessment consists of 3 timed passages relevant to crisis intervention work. You will have 2.5 minutes per passage. Your results will be submitted automatically upon completion.</p>
   <div class="card">
     <label class="label" for="nameInput">Full Name *</label>
     <input class="input" type="text" id="nameInput" placeholder="Enter your full name">
     <label class="label" for="emailInput">Email Address</label>
     <input class="input" type="email" id="emailInput" placeholder="Enter your email (optional)">
     <div class="info-box">
-      <div class="info-row"><span class="info-lbl">Duration:</span> 2.5 minutes</div>
-      <div class="info-row"><span class="info-lbl">Attempts:</span> Maximum of 3</div>
+      <div class="info-row"><span class="info-lbl">Passages:</span> 3</div>
+      <div class="info-row"><span class="info-lbl">Time per passage:</span> 2.5 minutes</div>
+      <div class="info-row"><span class="info-lbl">Total time:</span> ~7.5 minutes</div>
     </div>
     <button class="btn-primary" id="beginBtn" disabled>Begin Assessment</button>
   </div>
   <div class="warning">
     <span class="warning-icon">⚠</span>
-    <div><strong>Important:</strong> You have a maximum of <strong>3 attempts</strong> to complete this assessment. Once you begin typing, your attempt is recorded and submitted. If you navigate away or restart without completing the test, it will count as a failed attempt. Please ensure you are ready before you start.</div>
+    <div><strong>Important:</strong> Once you begin, your attempt is recorded. If you navigate away or close the browser before completing all 3 passages, it will be recorded as an incomplete attempt. Please ensure you are ready and have approximately <strong>8 minutes</strong> available before you start.</div>
   </div>
   <p class="fine">By proceeding, you acknowledge that your responses and connection details will be recorded for evaluation purposes.</p>
 </div>
@@ -85,20 +94,40 @@ h1{font-size:28px;font-weight:700;letter-spacing:-0.02em;margin-bottom:8px;color
 <!-- TEST SCREEN -->
 <div id="testScreen" class="test-container hidden">
   <div class="test-header">
-    <div>
+    <div class="test-header-left">
+      <span class="passage-counter" id="passageCounter">Passage 1 of 3</span>
       <span class="passage-label" id="passageTitle"></span>
       <span class="name-tag" id="testName"></span>
     </div>
     <div class="timer" id="timerDisplay">2:30</div>
   </div>
+  <div class="overall-progress" id="overallProgress">
+    <div class="overall-step active" id="step0"></div>
+    <div class="overall-step" id="step1"></div>
+    <div class="overall-step" id="step2"></div>
+  </div>
   <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
   <div class="text-display" id="textDisplay"></div>
   <textarea class="hidden-input" id="typingInput" spellcheck="false" autocorrect="off" autocapitalize="off"></textarea>
-  <div class="hint" id="hintText">Start typing to begin the assessment...</div>
+  <div class="hint" id="hintText">Start typing to begin the passage...</div>
   <div class="live-info hidden" id="liveInfo">
     <div class="recording"><span class="rec-dot"></span> Attempt in progress — being recorded</div>
     <div class="pct-text" id="pctText">0% complete</div>
   </div>
+</div>
+
+<!-- TRANSITION SCREEN -->
+<div id="transitionScreen" class="transition-container hidden">
+  <div class="arrow-circle">→</div>
+  <h1 class="ty-title" id="transTitle">Passage 1 Complete</h1>
+  <p class="ty-text" id="transText">Nice work. When you're ready, click below to begin the next passage. You'll have another 2.5 minutes.</p>
+  <div class="ty-divider"></div>
+  <div class="overall-progress" id="transProgress" style="max-width:200px;margin:0 auto 24px">
+    <div class="overall-step done" id="ts0"></div>
+    <div class="overall-step" id="ts1"></div>
+    <div class="overall-step" id="ts2"></div>
+  </div>
+  <button class="btn-primary" id="nextBtn" style="max-width:320px;margin:0 auto">Begin Next Passage</button>
 </div>
 
 <!-- THANK YOU SCREEN -->
@@ -110,7 +139,6 @@ h1{font-size:28px;font-weight:700;letter-spacing:-0.02em;margin-bottom:8px;color
   <p class="saving hidden" id="savingText">Submitting your results...</p>
   <div class="ty-divider"></div>
   <p class="ty-small">If you have questions about the application process, please contact the program coordinator.</p>
-  <button class="btn-secondary" id="retakeBtn">Take Another Test</button>
 </div>
 
 <script>
@@ -137,7 +165,7 @@ const FIELD_MAP = {
   abandoned: "entry.825008667",
 };
 
-const PASSAGES = [
+const ALL_PASSAGES = [
   { title: "Crisis De-escalation", text: "I hear that you are going through something incredibly difficult right now. Thank you for reaching out and sharing this with me. I want you to know that you are not alone in this moment, and I am here to listen and support you through whatever you are experiencing. Your feelings are valid, and it takes real courage to ask for help." },
   { title: "Safety Planning", text: "Let us work together to create a plan that can help you feel safer. Can you tell me about some things that have helped you cope in the past? Sometimes it helps to think about people you trust, places that feel safe, or activities that bring you some comfort. We can write these down together so you have them when you need them most." },
   { title: "Active Listening Response", text: "It sounds like you have been carrying a lot of weight on your shoulders lately, and that must feel exhausting. I want to make sure I understand what you are telling me. You mentioned feeling overwhelmed at work and disconnected from the people around you. Is that right? I appreciate you being so open with me about these feelings." },
@@ -145,13 +173,15 @@ const PASSAGES = [
 ];
 
 const DURATION = 150;
+const TOTAL_PASSAGES = 3;
 
 // ============================================
 // STATE
 // ============================================
 let applicantName = "";
 let applicantEmail = "";
-let passage = null;
+let passages = [];
+let currentPassageIndex = 0;
 let typed = "";
 let timeLeft = DURATION;
 let started = false;
@@ -163,17 +193,22 @@ let charStates = [];
 let timerInterval = null;
 let hasSubmitted = false;
 
+// Store results per passage
+let passageResults = [];
+
 // ============================================
 // ELEMENTS
 // ============================================
 const $ = id => document.getElementById(id);
 const startScreen = $("startScreen");
 const testScreen = $("testScreen");
+const transitionScreen = $("transitionScreen");
 const thankYouScreen = $("thankYouScreen");
 const nameInput = $("nameInput");
 const emailInput = $("emailInput");
 const beginBtn = $("beginBtn");
 const passageTitle = $("passageTitle");
+const passageCounter = $("passageCounter");
 const testName = $("testName");
 const timerDisplay = $("timerDisplay");
 const progressFill = $("progressFill");
@@ -184,7 +219,9 @@ const liveInfo = $("liveInfo");
 const pctText = $("pctText");
 const tyName = $("tyName");
 const savingText = $("savingText");
-const retakeBtn = $("retakeBtn");
+const nextBtn = $("nextBtn");
+const transTitle = $("transTitle");
+const transText = $("transText");
 
 // ============================================
 // IP DETECTION
@@ -230,9 +267,19 @@ function submitToGoogle(data) {
 }
 
 // ============================================
-// RESULTS CALCULATION
+// HELPERS
 // ============================================
-function calcResults() {
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function calcPassageResults() {
+  const passage = passages[currentPassageIndex];
   const target = passage.text;
   const elapsedSec = started ? DURATION - timeLeft || DURATION : 0;
   const elapsedMin = elapsedSec / 60;
@@ -242,7 +289,7 @@ function calcResults() {
   const netWPM = elapsedMin > 0 ? Math.max(0, Math.round((totalTyped / 5 - errors) / elapsedMin)) : 0;
   const accuracy = totalTyped > 0 ? Math.round((correctChars / totalTyped) * 100) : 0;
   const completion = Math.round((totalTyped / target.length) * 100);
-  return { grossWPM, netWPM, accuracy, completion, correctChars, totalTyped, elapsedSec, errors };
+  return { grossWPM, netWPM, accuracy, completion, correctChars, totalTyped, elapsedSec, errors, keystrokes, passageTitle: passage.title };
 }
 
 function getGrade(netWPM, accuracy) {
@@ -252,15 +299,48 @@ function getGrade(netWPM, accuracy) {
   return { label: "Needs Improvement", rec: "Recommend typing practice before re-assessment." };
 }
 
-function doSubmit(abandoned) {
+function computeFinalResults(abandoned) {
+  const n = passageResults.length;
+  if (n === 0) {
+    return {
+      netWPM: 0, grossWPM: 0, accuracy: 0, errors: 0, completion: 0,
+      elapsedSec: 0, keystrokes: 0, efficiency: 0,
+      passageTitles: passages.map(p => p.title).join(", "),
+      grade: abandoned ? "Abandoned" : "Needs Improvement",
+      recommendation: abandoned ? "Applicant abandoned the test before completion." : "Recommend typing practice before re-assessment."
+    };
+  }
+
+  const avgNet = Math.round(passageResults.reduce((s, r) => s + r.netWPM, 0) / n);
+  const avgGross = Math.round(passageResults.reduce((s, r) => s + r.grossWPM, 0) / n);
+  const avgAcc = Math.round(passageResults.reduce((s, r) => s + r.accuracy, 0) / n);
+  const avgComp = Math.round(passageResults.reduce((s, r) => s + r.completion, 0) / n);
+  const totalErrors = passageResults.reduce((s, r) => s + r.errors, 0);
+  const totalElapsed = passageResults.reduce((s, r) => s + r.elapsedSec, 0);
+  const totalKeystrokes = passageResults.reduce((s, r) => s + r.keystrokes, 0);
+  const totalCorrect = passageResults.reduce((s, r) => s + r.correctChars, 0);
+  const efficiency = totalKeystrokes > 0 ? Math.round((totalCorrect / totalKeystrokes) * 100) : 0;
+  const titles = passageResults.map(r => r.passageTitle).join(", ");
+
+  const g = abandoned
+    ? { label: "Abandoned", rec: "Applicant abandoned the test before completion (" + n + " of " + TOTAL_PASSAGES + " passages completed)." }
+    : getGrade(avgNet, avgAcc);
+
+  return {
+    netWPM: avgNet, grossWPM: avgGross, accuracy: avgAcc,
+    errors: totalErrors, completion: avgComp,
+    elapsedSec: totalElapsed, keystrokes: totalKeystrokes,
+    efficiency: efficiency, passageTitles: titles,
+    grade: g.label, recommendation: g.rec
+  };
+}
+
+function doFinalSubmit(abandoned) {
   if (hasSubmitted) return;
   hasSubmitted = true;
   savingText.classList.remove("hidden");
 
-  const r = calcResults();
-  const g = abandoned
-    ? { label: "Abandoned", rec: "Applicant abandoned the test before completion." }
-    : getGrade(r.netWPM, r.accuracy);
+  const r = computeFinalResults(abandoned);
 
   submitToGoogle({
     name: applicantName,
@@ -271,13 +351,13 @@ function doSubmit(abandoned) {
     accuracy: r.accuracy,
     errors: r.errors,
     completion: r.completion,
-    grade: g.label,
-    passage: passage.title,
-    duration: DURATION,
+    grade: r.grade,
+    passage: r.passageTitles,
+    duration: DURATION * TOTAL_PASSAGES,
     elapsedSec: r.elapsedSec,
-    keystrokes: keystrokes,
-    efficiency: r.totalTyped > 0 ? Math.round((r.correctChars / keystrokes) * 100) : 0,
-    recommendation: g.rec,
+    keystrokes: r.keystrokes,
+    efficiency: r.efficiency,
+    recommendation: r.recommendation,
     abandoned: abandoned ? "Yes" : "No",
   });
 
@@ -290,12 +370,13 @@ function doSubmit(abandoned) {
 function showScreen(screen) {
   startScreen.classList.add("hidden");
   testScreen.classList.add("hidden");
+  transitionScreen.classList.add("hidden");
   thankYouScreen.classList.add("hidden");
   screen.classList.remove("hidden");
 }
 
 function renderText() {
-  const target = passage.text;
+  const target = passages[currentPassageIndex].text;
   let html = "";
   for (let i = 0; i < target.length; i++) {
     let cls = "char-pending";
@@ -307,8 +388,6 @@ function renderText() {
     html += '<span class="' + cls + '">' + ch + '</span>';
   }
   textDisplay.innerHTML = html;
-
-  // Scroll cursor into view
   const cursorEl = textDisplay.querySelector(".char-cursor");
   if (cursorEl) cursorEl.scrollIntoView({ block: "nearest", behavior: "smooth" });
 }
@@ -323,22 +402,43 @@ function updateTimer() {
 }
 
 function updateProgress() {
-  const pct = Math.min((typed.length / passage.text.length) * 100, 100);
+  const target = passages[currentPassageIndex].text;
+  const pct = Math.min((typed.length / target.length) * 100, 100);
   progressFill.style.width = pct + "%";
   pctText.textContent = Math.round(pct) + "% complete";
+}
+
+function updateOverallSteps(containerId) {
+  for (let i = 0; i < TOTAL_PASSAGES; i++) {
+    const el = $(containerId + i);
+    if (!el) continue;
+    el.className = "overall-step";
+    if (i < currentPassageIndex) el.classList.add("done");
+    else if (i === currentPassageIndex) el.classList.add("active");
+  }
 }
 
 // ============================================
 // TEST LOGIC
 // ============================================
-function startTest() {
-  passage = PASSAGES[Math.floor(Math.random() * PASSAGES.length)];
+function beginAssessment() {
+  passages = shuffle(ALL_PASSAGES).slice(0, TOTAL_PASSAGES);
   applicantName = nameInput.value.trim();
   applicantEmail = emailInput.value.trim();
+  currentPassageIndex = 0;
+  passageResults = [];
+  hasSubmitted = false;
+  startPassage();
+}
+
+function startPassage() {
+  const passage = passages[currentPassageIndex];
 
   passageTitle.textContent = passage.title;
+  passageCounter.textContent = "Passage " + (currentPassageIndex + 1) + " of " + TOTAL_PASSAGES;
   testName.textContent = applicantName;
   timerDisplay.textContent = formatTime(DURATION);
+  timerDisplay.className = "timer";
   progressFill.style.width = "0%";
   hintText.classList.remove("hidden");
   liveInfo.classList.add("hidden");
@@ -350,25 +450,65 @@ function startTest() {
   keystrokes = 0;
   errors = 0;
   charStates = [];
-  hasSubmitted = false;
   typingInput.value = "";
 
+  updateOverallSteps("step");
   renderText();
   showScreen(testScreen);
   typingInput.focus();
 }
 
-function endTest() {
+function endPassage() {
   finished = true;
   clearInterval(timerInterval);
-  tyName.textContent = applicantName;
-  showScreen(thankYouScreen);
-  doSubmit(false);
+
+  // Save this passage's results
+  const result = calcPassageResults();
+  passageResults.push(result);
+
+  if (currentPassageIndex < TOTAL_PASSAGES - 1) {
+    // Show transition screen
+    showTransition();
+  } else {
+    // All done
+    tyName.textContent = applicantName;
+    showScreen(thankYouScreen);
+    doFinalSubmit(false);
+  }
+}
+
+function showTransition() {
+  const num = currentPassageIndex + 1;
+  transTitle.textContent = "Passage " + num + " Complete";
+
+  if (currentPassageIndex === TOTAL_PASSAGES - 2) {
+    transText.textContent = "Almost there — one more passage to go. When you're ready, click below to begin the final passage. You'll have another 2.5 minutes.";
+    nextBtn.textContent = "Begin Final Passage";
+  } else {
+    transText.textContent = "Nice work. When you're ready, click below to begin the next passage. You'll have another 2.5 minutes.";
+    nextBtn.textContent = "Begin Next Passage";
+  }
+
+  // Update transition progress dots
+  for (let i = 0; i < TOTAL_PASSAGES; i++) {
+    const el = $("ts" + i);
+    if (!el) continue;
+    el.className = "overall-step";
+    if (i <= currentPassageIndex) el.classList.add("done");
+  }
+
+  showScreen(transitionScreen);
+}
+
+function goToNextPassage() {
+  currentPassageIndex++;
+  startPassage();
 }
 
 function onTyping() {
   if (finished) return;
   const val = typingInput.value;
+  const passage = passages[currentPassageIndex];
 
   if (!started && val.length > 0) {
     started = true;
@@ -381,7 +521,7 @@ function onTyping() {
       updateTimer();
       if (timeLeft <= 0) {
         clearInterval(timerInterval);
-        endTest();
+        endPassage();
       }
     }, 1000);
   }
@@ -403,55 +543,24 @@ function onTyping() {
   updateProgress();
 
   if (val.length >= target.length) {
-    endTest();
+    endPassage();
   }
 }
 
-function resetAll() {
-  if (started && !finished && !hasSubmitted) {
-    doSubmit(true);
-  }
-  nameInput.value = "";
-  emailInput.value = "";
-  beginBtn.disabled = true;
-  typingInput.value = "";
-  clearInterval(timerInterval);
-  showScreen(startScreen);
-  nameInput.focus();
-}
-
 // ============================================
-// EVENT LISTENERS
+// ABANDONED TRACKING
 // ============================================
-nameInput.addEventListener("input", () => {
-  beginBtn.disabled = !nameInput.value.trim();
-});
-
-beginBtn.addEventListener("click", () => {
-  if (nameInput.value.trim()) startTest();
-});
-
-typingInput.addEventListener("input", onTyping);
-
-testScreen.addEventListener("click", () => {
-  typingInput.focus();
-});
-
-retakeBtn.addEventListener("click", resetAll);
-
-// Warn before leaving during active test
-window.addEventListener("beforeunload", (e) => {
-  if (started && !finished) {
-    e.preventDefault();
-    e.returnValue = "";
-  }
-});
-
-// Submit abandoned attempt if they close/refresh the page
 function sendAbandoned() {
-  if (!started || finished || hasSubmitted) return;
+  if (!started || hasSubmitted) return;
+  // Save current passage results if in progress
+  if (!finished) {
+    const result = calcPassageResults();
+    passageResults.push(result);
+  }
   hasSubmitted = true;
-  const r = calcResults();
+
+  const r = computeFinalResults(true);
+  const params = new URLSearchParams();
   const submitData = {
     name: applicantName,
     email: applicantEmail,
@@ -461,27 +570,24 @@ function sendAbandoned() {
     accuracy: r.accuracy,
     errors: r.errors,
     completion: r.completion,
-    grade: "Abandoned",
-    passage: passage.title,
-    duration: DURATION,
+    grade: r.grade,
+    passage: r.passageTitles,
+    duration: DURATION * TOTAL_PASSAGES,
     elapsedSec: r.elapsedSec,
-    keystrokes: keystrokes,
-    efficiency: r.totalTyped > 0 ? Math.round((r.correctChars / keystrokes) * 100) : 0,
-    recommendation: "Applicant abandoned the test before completion.",
+    keystrokes: r.keystrokes,
+    efficiency: r.efficiency,
+    recommendation: r.recommendation,
     abandoned: "Yes",
   };
-  const params = new URLSearchParams();
   Object.entries(FIELD_MAP).forEach(([key, entry]) => {
     params.append(entry, String(submitData[key] ?? ""));
   });
 
-  // Method 1: sendBeacon with Blob
   try {
     const blob = new Blob([params.toString()], { type: "application/x-www-form-urlencoded" });
     navigator.sendBeacon(FORM_URL, blob);
   } catch(e) {}
 
-  // Method 2: sync XHR (last resort, works on page close)
   try {
     var xhr = new XMLHttpRequest();
     xhr.open("POST", FORM_URL, false);
@@ -491,17 +597,39 @@ function sendAbandoned() {
 }
 
 window.addEventListener("pagehide", () => { sendAbandoned(); });
-window.addEventListener("beforeunload", () => { sendAbandoned(); });
+window.addEventListener("beforeunload", (e) => {
+  if (started && !hasSubmitted) {
+    sendAbandoned();
+    e.preventDefault();
+    e.returnValue = "";
+  }
+});
 
-// Handle keyboard shortcut to focus input
-document.addEventListener("keydown", (e) => {
-  if (testScreen.classList.contains("hidden")) return;
-  if (document.activeElement !== typingInput) {
+// ============================================
+// EVENT LISTENERS
+// ============================================
+nameInput.addEventListener("input", () => {
+  beginBtn.disabled = !nameInput.value.trim();
+});
+
+beginBtn.addEventListener("click", () => {
+  if (nameInput.value.trim()) beginAssessment();
+});
+
+typingInput.addEventListener("input", onTyping);
+
+testScreen.addEventListener("click", () => {
+  typingInput.focus();
+});
+
+nextBtn.addEventListener("click", goToNextPassage);
+
+document.addEventListener("keydown", () => {
+  if (!testScreen.classList.contains("hidden") && document.activeElement !== typingInput) {
     typingInput.focus();
   }
 });
 
-// Initial focus
 nameInput.focus();
 </script>
 </body>
